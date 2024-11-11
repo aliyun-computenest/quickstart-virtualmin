@@ -1,43 +1,37 @@
-# AnalyticDB PostgreSQL数据库与LLM（大语言模型）构建‘仓内智能’
+# Virtualmin 社区版快速部署
 
-## 背景介绍
+## 概述
+Virtualmin 是专为 Linux 系统设计的领先且最复杂的网络托管控制面板。它支持多种 Linux 发行版，包括 Debian 和 Ubuntu、Rocky Linux、AlmaLinux 和 RHEL。提供社区支持的开源 GPL 版本和功能丰富的 Pro 版本，为网络托管管理提供经济高效的解决方案。它是网络开发人员、IT 专业人员和托管服务提供商的理想选择，可简化服务器安全更新和从 WordPress 到 Django 的 Web 应用程序的部署，以确保易用性和无缝的网站管理体验。详情请查看[Virtualmin官网](https://www.virtualmin.com/docs/)。
 
-`AnalyticDB PostgreSQL 作为一个数据分析与轻量级AI一体化的平台，可以帮助绝大多数中小型客户在数据库内部，闭环实现‘数据分析为主’与‘AI应用为辅’的诉求，为数据分析需求插上AI的翅膀。通过与部署在阿里云 PAI-EAS 平台上的 LLM（大语言模型） 进行交互，实现对语言的推理、分类、归纳、总结等扩展能力。`。
+## 计费说明
+Virtualmin社区版上的费用主要涉及：
 
-```
-本服务用于开通：AnalyticDB PostgreSQL数据库实例 + PAI-EAS平台上的LLM（大语言）服务，快速体验‘仓内智能’。
-```
-## 部署架构
-![avatar](deploy.png)
-```
-通过AnalyticDB PostgreSQL数据库提供的新函数：PG_CATALOG.AI_GENERATE_TEXT(...)，与部署在阿里云PAI模型在线服务（EAS）平台中的LLM（大语言模型）服务进行交互，实现对语言的推理、分类、归纳、总结。
-```
-## 开通 AnalyticDB PostgreSQL (ADBPG) 仓内智能
-```
-通过计算巢服务，一站式创建：
-1. ADBPG 数据仓库实例； 
-2. 在PAI-EAS平台上部署LLM（大语言）服务；
-```
+- 所选vCPU与内存规格
+- 系统盘类型及容量
+- 公网带宽
 
-## 创建流程
-### 1. 首先在阿里云账户 - 控制台中，找到‘计算巢’服务
-![avatar](image.png)
-### 2. 进入计算巢服务后，点击‘服务市场’，并在搜索框中搜寻关键字‘仓内智能’，找到‘AnalyticDB PostgreSQL 仓内智能’服务，并单击进入。
-![avatar](image2.png)
-### 3. 选择 ADBPG 与 PAI-EAS 开通地域，并依次配置需要部署的大语言服务、ADBPG数据仓库的规格、VPC等相关信息。检查配置无误后，确认订单，创建服务。
-![avatar](image3.png)
-![avatar](image4.png)
-![avatar](image5.png)
-### 4. 计算巢会分别创建：ADBPG 数据仓库实例、与部署在 PAI-EAS 的大模型服务。整体时间大约20分钟左右。等待进度条变为 100%，点击进入。
-![avatar](image6.png)
-![avatar](image7.png)
-### 5. 在‘概览’中，可以查询到调用大模型服务，所用到的访问地址（Endpoint）与 Token。这两个参数非常重要。同时也可在 PAI-EAS 服务中查询到（详情见后）。
-![avatar](image8.png)
-### 6. 选择‘资源’，查看部署完成的 ADBPG数据仓库实例信息、与PAI-EAS 大模型语言服务。
-![avatar](image9.png)
-### 7. 点击步骤 #6 中的 AnalyticDB PostgreSQL，查看开通的 ADBPG数据仓库实例信息。
-![avatar](image10.png)
-### 8. 点击步骤 #6 中的‘机器学习’服务，可以查看到PAI-EAS 大语言模型服务，对应的具体部署信息。例如：查看大语言模型的 Endpoint 与 Token。这部分信息，在后续使用‘大语言模型’服务时会用到（通过步骤#5，也可以查询到该信息）。
-![avatar](image11.png)
-### 9. 参考以下文档，使用‘仓内智能’特性。
-`https://help.aliyun.com/zh/analyticdb-for-postgresql/user-guide/aigc-warehouse-intelligence?spm=a2c4g.11186623.0.i3`
+## RAM账号所需权限
+部署Virtualmin社区版，需要对部分阿里云资源进行访问和创建操作。因此您的账号需要包含如下资源的权限。
+  **说明**：当您的账号是RAM账号时，才需要添加此权限。
+
+| 权限策略名称                          | 备注                                 |
+|---------------------------------|------------------------------------|
+| AliyunECSFullAccess             | 管理云服务器服务（ECS）的权限                   |
+| AliyunVPCFullAccess             | 管理专有网络（VPC）的权限                     |
+| AliyunROSFullAccess             | 管理资源编排服务（ROS）的权限                   |
+| AliyunComputeNestUserFullAccess | 管理计算巢服务（ComputeNest）的用户侧权限         |
+
+## 部署流程
+1. 访问Virtualmin社区版服务[部署链接](https://computenest.console.aliyun.com/service/instance/create/default?type=user&ServiceName=Virtualmin社区版)，按提示填写部署参数：
+  ![image.png](1.jpg)
+
+2. 参数填写完成后可以看到对应询价明细，确认参数后点击**下一步：确认订单**。 确认订单完成后同意服务协议并点击**立即创建**进入部署阶段。
+
+3. 等待部署完成后进入服务实例管理, 在控制台找到Virtualmin服务访问链接。
+  ![image.png](2.jpg)
+
+4. 单击链接访问服务。
+  ![image.png](3.jpg)
+
+5. 输入服务用户名（root）和密码（创建服务实例时设置的密码）登录。
+  ![image.png](4.jpg)
